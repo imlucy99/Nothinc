@@ -15,7 +15,7 @@ body {
     overflow: hidden;
 }
 
-/* Container Speedometer HUD */
+/* Panel Utama HUD */
 .speedometer {
     position: fixed;
     bottom: 25px;
@@ -32,7 +32,7 @@ body {
     gap: 14px;
 }
 
-/* Header Status Bar */
+/* Status Bar Atas */
 .hud-header {
     display: flex;
     justify-content: space-between;
@@ -74,7 +74,7 @@ body {
     transform: scale(1.15);
 }
 
-/* Main Display (Speed & Gear) */
+/* Display Utama (Kecepatan & Gigi) */
 .main-display {
     display: flex;
     justify-content: space-between;
@@ -125,7 +125,7 @@ body {
     color: rgba(255, 255, 255, 0.5);
 }
 
-/* Progress Bar (RPM, Fuel, Health) */
+/* Indikator Bar (RPM, Fuel, Health) */
 .rpm-section {
     display: flex;
     flex-direction: column;
@@ -152,6 +152,7 @@ body {
     background: rgba(255, 255, 255, 0.1);
     border-radius: 3px;
     overflow: hidden;
+    position: relative;
 }
 
 .bar-track.mini {
@@ -165,7 +166,7 @@ body {
     transition: width 0.15s ease-out;
 }
 
-/* Grid Fuel & Health */
+/* Grid Bensin & Kondisi Mesin */
 .metrics-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -199,7 +200,7 @@ body {
     color: #ffffff;
 }
 
-/* HUD Footer */
+/* Footer / Odometer */
 .hud-footer {
     display: flex;
     align-items: center;
