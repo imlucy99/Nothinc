@@ -1,143 +1,115 @@
-let elements = {};
-let speedMode = 1;
-let indicators = 0;
+window.addEventListener('message', function(event) {
+    let data = event.data;
 
-function setEngine(state) {
-    if (elements.engine) elements.engine.innerText = state ? 'ON' : 'OFF';
-    if (elements.engineBox) {
-        elements.engineBox.classList.toggle('active', !!state);
-    }
-}
-
-function setSpeed(speed) {
-    let convertedSpeed = 0;
-    let unitLabel = 'KMH';
-
-    switch(speedMode) {
-        case 1:
-            convertedSpeed = Math.round(speed * 2.236936);
-            unitLabel = 'MPH';
-            break;
-        case 2:
-            convertedSpeed = Math.round(speed * 1.943844);
-            unitLabel = 'KNOTS';
-            break;
-        default:
-            convertedSpeed = Math.round(speed * 3.6);
-            unitLabel = 'KMH';
-            break;
+    // 1. Mengatur Visibilitas (Sembunyikan/Tampilkan Speedometer)
+    if (data.type === "hud" || data.action === "show") {
+        if (data.display !== undefined) {
+            document.body.style.display = data.display ? "block" : "none";
+        }
     }
 
-    if (elements.speedVal) elements.speedVal.innerText = convertedSpeed;
-    if (elements.speedUnit) elements.speedUnit.innerText = unitLabel;
-}
-
-function setRPM(rpm) {
-    let clamped = Math.max(0, Math.min(1, rpm));
-    if (elements.rpmVal) elements.rpmVal.innerText = clamped.toFixed(4);
-    if (elements.rpmBar) elements.rpmBar.style.width = `${clamped * 100}%`;
-}
-
-function setFuel(fuel) {
-    let clamped = Math.max(0, Math.min(1, fuel));
-    let percentage = (clamped * 100).toFixed(1);
-    if (elements.fuel) elements.fuel.innerText = `${percentage}%`;
-    if (elements.fuelBar) elements.fuelBar.style.width = `${percentage}%`;
-}
-
-function setHealth(health) {
-    let clamped = Math.max(0, Math.min(1, health));
-    let percentage = (clamped * 100).toFixed(1);
-    if (elements.health) elements.health.innerText = `${percentage}%`;
-    if (elements.healthBar) elements.healthBar.style.width = `${percentage}%`;
-}
-
-function setGear(gear) {
-    if (!elements.gear) return;
-    if (gear === 0 || gear === '0') {
-        elements.gear.innerText = 'N';
-    } else {
-        elements.gear.innerText = String(gear).toUpperCase();
+    // 2. Kecepatan (Speed) & Satuan
+    if (data.speed !== undefined) {
+        let speedVal = document.getElementById('speed-val');
+        if (speedVal) speedVal.innerText = Math.round(data.speed);
     }
-}
-
-function setHeadlights(state) {
-    if (!elements.headlights || !elements.headlightBox || !elements.headlightIcon) return;
-
-    if (state === 1) {
-        elements.headlights.innerText = 'LOW';
-        elements.headlightBox.classList.add('active');
-        elements.headlightIcon.className = 'fa-solid fa-lightbulb';
-    } else if (state === 2) {
-        elements.headlights.innerText = 'HIGH';
-        elements.headlightBox.classList.add('active');
-        elements.headlightIcon.className = 'fa-solid fa-sun';
-    } else {
-        elements.headlights.innerText = 'OFF';
-        elements.headlightBox.classList.remove('active');
-        elements.headlightIcon.className = 'fa-solid fa-lightbulb';
+    if (data.unit !== undefined) {
+        let speedUnit = document.getElementById('speed-unit');
+        if (speedUnit) speedUnit.innerText = data.unit; // KMH / MPH
     }
-}
 
-function setLeftIndicator(state) {
-    indicators = (indicators & 0b10) | (state ? 0b01 : 0b00);
-    if (elements.indLeft) {
-        elements.indLeft.classList.toggle('active', !!state);
+    // 3. RPM
+    if (data.rpm !== undefined) {
+        let clamped = Math.max(0, Math.min(1, data.rpm));
+        let rpmVal = document.getElementById('rpm-val');
+        let rpmBar = document.getElementById('rpm-bar');
+        if (rpmVal) rpmVal.innerText = clamped.toFixed(4);
+        if (rpmBar) rpmBar.style.width = (clamped * 100) + '%';
     }
-}
 
-function setRightIndicator(state) {
-    indicators = (indicators & 0b01) | (state ? 0b10 : 0b00);
-    if (elements.indRight) {
-        elements.indRight.classList.toggle('active', !!state);
+    // 4. Bensin (Fuel)
+    if (data.fuel !== undefined) {
+        let percentage = Number(data.fuel).toFixed(1);
+        let fuelTxt = document.getElementById('fuel');
+        let fuelBar = document.getElementById('fuel-bar');
+        if (fuelTxt) fuelTxt.innerText = percentage + '%';
+        if (fuelBar) fuelBar.style.width = percentage + '%';
     }
-}
 
-function setSeatbelts(state) {
-    if (!elements.seatbelts || !elements.seatbeltBox || !elements.seatbeltIcon) return;
-
-    if (state) {
-        elements.seatbelts.innerText = 'ON';
-        elements.seatbeltBox.classList.add('active');
-        elements.seatbeltIcon.className = 'fa-solid fa-user-check';
-    } else {
-        elements.seatbelts.innerText = 'OFF';
-        elements.seatbeltBox.classList.remove('active');
-        elements.seatbeltIcon.className = 'fa-solid fa-user-slash';
+    // 5. Kesehatan Kendaraan (Engine Health)
+    if (data.health !== undefined) {
+        // Skala FiveM biasanya 0 - 1000, ubah ke persentase jika perlu
+        let healthPct = data.health > 1 ? (data.health / 10).toFixed(1) : (data.health * 100).toFixed(1);
+        healthPct = Math.max(0, Math.min(100, healthPct));
+        let healthTxt = document.getElementById('health');
+        let healthBar = document.getElementById('health-bar');
+        if (healthTxt) healthTxt.innerText = healthPct + '%';
+        if (healthBar) healthBar.style.width = healthPct + '%';
     }
-}
 
-function setSpeedMode(mode) {
-    speedMode = mode;
-}
-
-function setOdometer(distance) {
-    if (elements.odometer) {
-        elements.odometer.innerText = `${distance.toFixed(1)} Miles`;
+    // 6. Transmisi / Gigi (Gear)
+    if (data.gear !== undefined) {
+        let gearEl = document.getElementById('gear');
+        if (gearEl) {
+            if (data.gear === 0) {
+                gearEl.innerText = 'R';
+            } else {
+                gearEl.innerText = data.gear;
+            }
+        }
     }
-}
 
-document.addEventListener('DOMContentLoaded', () => {
-    elements = {
-        engine: document.getElementById('engine'),
-        engineBox: document.getElementById('engine-box'),
-        speedVal: document.getElementById('speed-val'),
-        speedUnit: document.getElementById('speed-unit'),
-        rpmVal: document.getElementById('rpm-val'),
-        rpmBar: document.getElementById('rpm-bar'),
-        fuel: document.getElementById('fuel'),
-        fuelBar: document.getElementById('fuel-bar'),
-        health: document.getElementById('health'),
-        healthBar: document.getElementById('health-bar'),
-        gear: document.getElementById('gear'),
-        headlights: document.getElementById('headlights'),
-        headlightBox: document.getElementById('headlight-box'),
-        headlightIcon: document.getElementById('headlight-icon'),
-        indLeft: document.getElementById('ind-left'),
-        indRight: document.getElementById('ind-right'),
-        seatbelts: document.getElementById('seatbelts'),
-        seatbeltBox: document.getElementById('seatbelt-box'),
-        seatbeltIcon: document.getElementById('seatbelt-icon'),
-        odometer: document.getElementById('odometer')
-    };
+    // 7. Status Mesin (Engine)
+    if (data.engine !== undefined) {
+        let txt = document.getElementById('engine');
+        let box = document.getElementById('engine-box');
+        if (txt) txt.innerText = data.engine ? 'ON' : 'OFF';
+        if (box) box.classList.toggle('active', !!data.engine);
+    }
+
+    // 8. Sabuk Pengaman (Seatbelt)
+    if (data.seatbelt !== undefined) {
+        let txt = document.getElementById('seatbelts');
+        let box = document.getElementById('seatbelt-box');
+        let icon = document.getElementById('seatbelt-icon');
+        if (txt) txt.innerText = data.seatbelt ? 'ON' : 'OFF';
+        if (box) box.classList.toggle('active', !!data.seatbelt);
+        if (icon) icon.className = data.seatbelt ? 'fa-solid fa-user-check' : 'fa-solid fa-user-slash';
+    }
+
+    // 9. Lampu (Headlights)
+    if (data.lights !== undefined) {
+        let txt = document.getElementById('headlights');
+        let box = document.getElementById('headlight-box');
+        let icon = document.getElementById('headlight-icon');
+        if (data.lights === 1) { // Low beam
+            if (txt) txt.innerText = 'LOW';
+            if (box) box.classList.add('active');
+            if (icon) icon.className = 'fa-solid fa-lightbulb';
+        } else if (data.lights === 2) { // High beam
+            if (txt) txt.innerText = 'HIGH';
+            if (box) box.classList.add('active');
+            if (icon) icon.className = 'fa-solid fa-sun';
+        } else { // Off
+            if (txt) txt.innerText = 'OFF';
+            if (box) box.classList.remove('active');
+            if (icon) icon.className = 'fa-solid fa-lightbulb';
+        }
+    }
+
+    // 10. Lampu Sein (Indicators)
+    if (data.indicatorLeft !== undefined) {
+        let el = document.getElementById('ind-left');
+        if (el) el.classList.toggle('active', !!data.indicatorLeft);
+    }
+    if (data.indicatorRight !== undefined) {
+        let el = document.getElementById('ind-right');
+        if (el) el.classList.toggle('active', !!data.indicatorRight);
+    }
+
+    // 11. Odometer
+    if (data.odometer !== undefined) {
+        let odo = document.getElementById('odometer');
+        if (odo) odo.innerText = Number(data.odometer).toFixed(1) + ' KM';
+    }
 });
