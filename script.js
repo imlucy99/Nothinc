@@ -1,18 +1,19 @@
-// Function untuk update Engine Status & Warna Ikon Engine
+// Function Update Status Mesin (Engine)
 window.updateEngineStatus = function(healthPercent) {
     const engineBar = document.getElementById('engine-bar');
     const engineIcon = document.getElementById('icon-engine');
     if (!engineBar || !engineIcon) return;
 
-    // Hitung offset progress bar (100% -> 0%)
-    const maxOffset = 100;
-    const offset = maxOffset - (maxOffset * (healthPercent / 100));
+    // Update arc progress bar
+    const maxOffset = 125;
+    const offset = maxOffset - (maxOffset * (Math.min(healthPercent, 100) / 100));
     engineBar.style.strokeDashoffset = offset;
 
-    // Reset warna class
+    // Reset Class Warna
     engineIcon.classList.remove('active-green', 'active-yellow', 'active-red');
-    
-    // Logika syarat warna: < 25% merah, <= 50% kuning
+
+    // Logika syarat warna:
+    // < 25% = Merah | <= 50% = Kuning | > 50% = Kuning/Normal
     if (healthPercent < 25) {
         engineIcon.classList.add('active-red');
         engineBar.style.stroke = '#ef4444';
@@ -20,24 +21,25 @@ window.updateEngineStatus = function(healthPercent) {
         engineIcon.classList.add('active-yellow');
         engineBar.style.stroke = '#eab308';
     } else {
-        engineIcon.classList.add('active-yellow'); // Sesuaikan dengan desain gambar ke-3 (kuning/putih)
+        engineIcon.classList.add('active-yellow');
         engineBar.style.stroke = '#eab308';
     }
 };
 
-// Function untuk update Fuel Status & Warna Ikon Fuel
+// Function Update Status Bensin (Fuel)
 window.updateFuelStatus = function(fuelPercent) {
     const fuelBar = document.getElementById('fuel-bar');
     const fuelIcon = document.getElementById('icon-fuel');
     if (!fuelBar || !fuelIcon) return;
 
-    const maxOffset = 100;
-    const offset = maxOffset - (maxOffset * (fuelPercent / 100));
+    const maxOffset = 125;
+    const offset = maxOffset - (maxOffset * (Math.min(fuelPercent, 100) / 100));
     fuelBar.style.strokeDashoffset = offset;
 
     fuelIcon.classList.remove('active-green', 'active-yellow', 'active-red');
 
-    // Logika syarat warna bensin
+    // Logika syarat warna bensin:
+    // < 25% = Merah | <= 50% = Kuning | > 50% = Hijau
     if (fuelPercent < 25) {
         fuelIcon.classList.add('active-red');
         fuelBar.style.stroke = '#ef4444';
@@ -50,22 +52,22 @@ window.updateFuelStatus = function(fuelPercent) {
     }
 };
 
-// Function Update Speed Value
+// Function Update Kecepatan
 window.updateSpeed = function(speed) {
     const speedVal = document.getElementById('speed-val');
     const speedBar = document.getElementById('speed-bar');
     if (speedVal) speedVal.innerText = Math.round(speed);
     
     if (speedBar) {
-        const maxSpeed = 220; // Kecepatan maksimum
-        const maxOffset = 270;
+        const maxSpeed = 220; // Batas KM/H
+        const maxOffset = 285;
         const currentSpeed = Math.min(speed, maxSpeed);
         const offset = maxOffset - (maxOffset * (currentSpeed / maxSpeed));
         speedBar.style.strokeDashoffset = offset;
     }
 };
 
-// Lock / Unlock Vehicle
+// Lock / Unlock Kendaraan
 window.updateLockStatus = function(state) {
     const el = document.getElementById('icon-lock');
     if (!el) return;
@@ -77,7 +79,7 @@ window.updateLockStatus = function(state) {
     }
 };
 
-// Headlight Status
+// Status Lampu Depan
 window.updateLightStatus = function(state) {
     const el = document.getElementById('icon-headlight');
     if (!el) return;
