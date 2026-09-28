@@ -3,29 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Speedometer JGRP</title>
+    <title>JGRP Speedometer</title>
     <link rel="stylesheet" href="styles.css">
-    <!-- FontAwesome untuk ikon indikator -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <div id="speedo-wrapper">
         <div id="speedometer-container">
             <svg class="speedo-svg" viewBox="0 0 200 200">
-                <!-- Outer Arc Kiri (Engine Health/Status) -->
-                <path class="ring-bg" d="M 32,130 A 82,82 0 0,1 62,38" stroke="#333" stroke-width="6" fill="none" stroke-linecap="round"/>
-                <path id="engine-bar" class="ring-fill" d="M 32,130 A 82,82 0 0,1 62,38" stroke="#eab308" stroke-width="6" fill="none" stroke-linecap="round"/>
+                <!-- Arc Background Abu-Abu (Kecepatan) -->
+                <path class="ring-bg" d="M 35,150 A 75,75 0 1,1 165,150" stroke="#3d3d3d" stroke-width="6" fill="none" stroke-linecap="round"/>
+                <!-- Arc Progress Kecepatan (Putih) -->
+                <path id="speed-bar" class="ring-fill" d="M 35,150 A 75,75 0 1,1 165,150" stroke="#ffffff" stroke-width="6" fill="none" stroke-linecap="round"/>
 
-                <!-- Middle Ring Utama (Kecepatan / Speed) -->
-                <path class="ring-bg" d="M 45,150 A 70,70 0 1,1 155,150" stroke="#333" stroke-width="6" fill="none" stroke-linecap="round"/>
-                <path id="speed-bar" class="ring-fill" d="M 45,150 A 70,70 0 1,1 155,150" stroke="#ffffff" stroke-width="6" fill="none" stroke-linecap="round"/>
+                <!-- Arc Outer Kiri Background (Engine) -->
+                <path class="ring-bg" d="M 20,132 A 92,92 0 0,1 55,32" stroke="#3d3d3d" stroke-width="7" fill="none" stroke-linecap="round"/>
+                <!-- Arc Outer Kiri Fill (Engine) -->
+                <path id="engine-bar" class="ring-fill" d="M 20,132 A 92,92 0 0,1 55,32" stroke="#eab308" stroke-width="7" fill="none" stroke-linecap="round"/>
 
-                <!-- Outer Arc Kanan (Fuel Level) -->
-                <path class="ring-bg" d="M 138,38 A 82,82 0 0,1 168,130" stroke="#333" stroke-width="6" fill="none" stroke-linecap="round"/>
-                <path id="fuel-bar" class="ring-fill" d="M 138,38 A 82,82 0 0,1 168,130" stroke="#84cc16" stroke-width="6" fill="none" stroke-linecap="round"/>
+                <!-- Arc Outer Kanan Background (Fuel) -->
+                <path class="ring-bg" d="M 145,32 A 92,92 0 0,1 180,132" stroke="#3d3d3d" stroke-width="7" fill="none" stroke-linecap="round"/>
+                <!-- Arc Outer Kanan Fill (Fuel) -->
+                <path id="fuel-bar" class="ring-fill" d="M 145,32 A 92,92 0 0,1 180,132" stroke="#84cc16" stroke-width="7" fill="none" stroke-linecap="round"/>
             </svg>
 
-            <!-- Teks Kecepatan di Tengah -->
+            <!-- Teks Kecepatan (Tengah) -->
             <div class="speed-display">
                 <span id="speed-val">0</span>
                 <span class="speed-unit">KM/H</span>
@@ -37,13 +39,6 @@
                 <div id="icon-engine" class="icon-item"><i class="fa-solid fa-car-battery"></i></div>
                 <div id="icon-lock" class="icon-item"><i class="fa-solid fa-door-closed"></i></div>
                 <div id="icon-fuel" class="icon-item"><i class="fa-solid fa-gas-pump"></i></div>
-            </div>
-
-            <!-- Sub Keybind Badges -->
-            <div class="keybinds">
-                <span class="badge">H</span>
-                <span class="badge">CTRL</span>
-                <span class="badge">L</span>
             </div>
         </div>
     </div>
