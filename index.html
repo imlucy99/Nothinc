@@ -1,47 +1,89 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minimalist Speedometer</title>
+    <title>Monochrome Speedometer</title>
     <link rel="stylesheet" href="styles.css">
+    <!-- FontAwesome untuk Icon Elegan -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div id="speedo-container">
-        <!-- Minimalist SVG Rings -->
-        <svg class="speedo-svg" viewBox="0 0 200 200">
-            <!-- Speed Arc (Tengah) -->
-            <path class="ring-bg" d="M 40,150 A 72,72 0 1,1 160,150" stroke-width="4"/>
-            <path id="speed-bar" class="ring-fill speed-fill" d="M 40,150 A 72,72 0 1,1 160,150" stroke-width="4"/>
-
-            <!-- Engine Outer Arc (Kiri) -->
-            <path class="ring-bg" d="M 22,135 A 88,88 0 0,1 60,32" stroke-width="3"/>
-            <path id="engine-bar" class="ring-fill" d="M 22,135 A 88,88 0 0,1 60,32" stroke-width="3"/>
-
-            <!-- Fuel Outer Arc (Kanan) -->
-            <path class="ring-bg" d="M 140,32 A 88,88 0 0,1 178,135" stroke-width="3"/>
-            <path id="fuel-bar" class="ring-fill" d="M 140,32 A 88,88 0 0,1 178,135" stroke-width="3"/>
-        </svg>
-
-        <!-- Speed Text Display -->
-        <div class="speed-box">
-            <span id="speed-val">0</span>
-            <span class="speed-unit">KM/H</span>
+    <main class="speedometer">
+        <!-- Status Bar Atas (Engine, Indicators, Headlights, Seatbelts) -->
+        <div class="hud-header">
+            <div class="status-item" id="engine-box">
+                <i class="fa-solid fa-power-off"></i>
+                <span id="engine">OFF</span>
+            </div>
+            <div class="indicators-container">
+                <i class="fa-solid fa-chevron-left indicator-icon" id="ind-left"></i>
+                <i class="fa-solid fa-chevron-right indicator-icon" id="ind-right"></i>
+            </div>
+            <div class="status-item" id="headlight-box">
+                <i class="fa-solid fa-lightbulb" id="headlight-icon"></i>
+                <span id="headlights">OFF</span>
+            </div>
+            <div class="status-item" id="seatbelt-box">
+                <i class="fa-solid fa-user-slash" id="seatbelt-icon"></i>
+                <span id="seatbelts">OFF</span>
+            </div>
         </div>
 
-        <!-- Minimalist Icon Indicators -->
-        <div class="indicators">
-            <div id="icon-headlight" class="icon-item"><i class="fa-solid fa-lightbulb"></i></div>
-            <div id="icon-engine" class="icon-item"><i class="fa-solid fa-car-battery"></i></div>
-            <div id="icon-lock" class="icon-item"><i class="fa-solid fa-door-closed"></i></div>
-            <div id="icon-seatbelt" class="icon-item unbuckled"><i class="fa-solid fa-user-slash"></i></div>
-            <div id="icon-fuel" class="icon-item"><i class="fa-solid fa-gas-pump"></i></div>
+        <!-- Display Utama (Gear & Speed) -->
+        <div class="main-display">
+            <div class="gear-container">
+                <span class="label">GEAR</span>
+                <span id="gear" class="gear-value">N</span>
+            </div>
+            <div class="speed-container">
+                <span id="speed-val" class="speed-value">0</span>
+                <span id="speed-unit" class="speed-unit">MPH</span>
+            </div>
         </div>
-    </div>
 
-    <!-- Audio Element untuk Seatbelt Alarm -->
-    <audio id="seatbelt-sound" src="seatbelt.mp3" preload="auto"></audio>
+        <!-- Progress Bar RPM -->
+        <div class="rpm-section">
+            <div class="bar-header">
+                <span>RPM</span>
+                <span id="rpm-val">0.0000</span>
+            </div>
+            <div class="bar-track">
+                <div id="rpm-bar" class="bar-fill" style="width: 0%;"></div>
+            </div>
+        </div>
+
+        <!-- Status Grid (Fuel & Health) -->
+        <div class="metrics-grid">
+            <div class="metric-box">
+                <div class="metric-info">
+                    <i class="fa-solid fa-gas-pump"></i>
+                    <span>FUEL</span>
+                    <span id="fuel" class="metric-val">0.0%</span>
+                </div>
+                <div class="bar-track mini">
+                    <div id="fuel-bar" class="bar-fill" style="width: 0%;"></div>
+                </div>
+            </div>
+
+            <div class="metric-box">
+                <div class="metric-info">
+                    <i class="fa-solid fa-wrench"></i>
+                    <span>HEALTH</span>
+                    <span id="health" class="metric-val">0.0%</span>
+                </div>
+                <div class="bar-track mini">
+                    <div id="health-bar" class="bar-fill" style="width: 0%;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer (Odometer) -->
+        <div class="hud-footer">
+            <i class="fa-solid fa-road"></i>
+            <span id="odometer">0.0 Miles</span>
+        </div>
+    </main>
 
     <script src="script.js"></script>
 </body>
