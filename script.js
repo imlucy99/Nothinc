@@ -1,19 +1,55 @@
-// Function Update Status Mesin (Engine)
+let seatbeltInterval = null;
+
+// Function Update Status Seatbelt + Pemicu Suara
+window.updateSeatbeltStatus = function(isBuckled) {
+    const seatbeltIcon = document.getElementById('icon-seatbelt');
+    const audio = document.getElementById('seatbelt-sound');
+    if (!seatbeltIcon) return;
+
+    if (isBuckled) {
+        // Seatbelt Terpasang (Aman)
+        seatbeltIcon.className = 'icon-item active-green';
+        seatbeltIcon.innerHTML = '<i class="fa-solid fa-user-shield"></i>';
+        
+        // Hentikan suara peringatan
+        if (seatbeltInterval) {
+            clearInterval(seatbeltInterval);
+            seatbeltInterval = null;
+        }
+        if (audio) {
+            audio.pause();
+            audio.currentTime = 0;
+        }
+    } else {
+        // Seatbelt Lepas (Bahaya)
+        seatbeltIcon.className = 'icon-item unbuckled';
+        seatbeltIcon.innerHTML = '<i class="fa-solid fa-user-slash"></i>';
+
+        // Bunyikan alarm setiap 1.5 detik jika belum bunyi
+        if (!seatbeltInterval) {
+            seatbeltInterval = setInterval(() => {
+                if (audio) {
+                    audio.currentTime = 0;
+                    audio.play().catch(() => {}); // Catch error jika dipetik oleh kebijakan autoplay browser
+                }
+            }, 1500);
+        }
+    }
+};
+
+// Function Update Engine Status & Warna Ikon Engine
 window.updateEngineStatus = function(healthPercent) {
     const engineBar = document.getElementById('engine-bar');
     const engineIcon = document.getElementById('icon-engine');
     if (!engineBar || !engineIcon) return;
 
-    // Update arc progress bar
-    const maxOffset = 125;
+    const maxOffset = 120;
     const offset = maxOffset - (maxOffset * (Math.min(healthPercent, 100) / 100));
     engineBar.style.strokeDashoffset = offset;
 
-    // Reset Class Warna
     engineIcon.classList.remove('active-green', 'active-yellow', 'active-red');
 
-    // Logika syarat warna:
-    // < 25% = Merah | <= 50% = Kuning | > 50% = Kuning/Normal
+    // Syarat: Engine <= 50% Kuning, < 25% Merah
     if (healthPercent < 25) {
         engineIcon.classList.add('active-red');
         engineBar.style.stroke = '#ef4444';
@@ -26,20 +62,19 @@ window.updateEngineStatus = function(healthPercent) {
     }
 };
 
-// Function Update Status Bensin (Fuel)
+// Function Update Fuel Status & Warna Ikon Fuel
 window.updateFuelStatus = function(fuelPercent) {
     const fuelBar = document.getElementById('fuel-bar');
     const fuelIcon = document.getElementById('icon-fuel');
     if (!fuelBar || !fuelIcon) return;
 
-    const maxOffset = 125;
+    const maxOffset = 120;
     const offset = maxOffset - (maxOffset * (Math.min(fuelPercent, 100) / 100));
     fuelBar.style.strokeDashoffset = offset;
 
     fuelIcon.classList.remove('active-green', 'active-yellow', 'active-red');
 
-    // Logika syarat warna bensin:
-    // < 25% = Merah | <= 50% = Kuning | > 50% = Hijau
+    // Syarat: Bensin <= 50% Kuning, < 25% Merah
     if (fuelPercent < 25) {
         fuelIcon.classList.add('active-red');
         fuelBar.style.stroke = '#ef4444';
@@ -48,26 +83,26 @@ window.updateFuelStatus = function(fuelPercent) {
         fuelBar.style.stroke = '#eab308';
     } else {
         fuelIcon.classList.add('active-green');
-        fuelBar.style.stroke = '#84cc16';
+        fuelBar.style.stroke = '#22c55e';
     }
 };
 
-// Function Update Kecepatan
+// Function Update Speed Value
 window.updateSpeed = function(speed) {
     const speedVal = document.getElementById('speed-val');
     const speedBar = document.getElementById('speed-bar');
     if (speedVal) speedVal.innerText = Math.round(speed);
     
     if (speedBar) {
-        const maxSpeed = 220; // Batas KM/H
-        const maxOffset = 285;
+        const maxSpeed = 220;
+        const maxOffset = 275;
         const currentSpeed = Math.min(speed, maxSpeed);
         const offset = maxOffset - (maxOffset * (currentSpeed / maxSpeed));
         speedBar.style.strokeDashoffset = offset;
     }
 };
 
-// Lock / Unlock Kendaraan
+// Lock / Unlock Vehicle
 window.updateLockStatus = function(state) {
     const el = document.getElementById('icon-lock');
     if (!el) return;
@@ -79,7 +114,7 @@ window.updateLockStatus = function(state) {
     }
 };
 
-// Status Lampu Depan
+// Headlight Status
 window.updateLightStatus = function(state) {
     const el = document.getElementById('icon-headlight');
     if (!el) return;
