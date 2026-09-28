@@ -1,5 +1,9 @@
 window.addEventListener('message', function(event) {
     let data = event.data;
+    console.log("Data dari FiveM:", JSON.stringify(data)); // Cek di Konsol F8
+    ...
+window.addEventListener('message', function(event) {
+    let data = event.data;
 
     // Supaya aman jika data dibungkus dalam object 'data' atau 'hud'
     if (data.data) data = data.data;
