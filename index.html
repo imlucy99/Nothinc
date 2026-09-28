@@ -3,46 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JGRP Speedometer Custom</title>
+    <title>Speedometer JGRP</title>
     <link rel="stylesheet" href="styles.css">
+    <!-- FontAwesome untuk ikon indikator -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div id="speedometer-container">
-        <svg class="speedo-svg" viewBox="0 0 200 200">
-            <!-- Background Ring (Tengah / Kecepatan) -->
-            <path class="ring-bg speed-ring-bg" d="M 45,155 A 75,75 0 1,1 155,155" />
-            <!-- Progress Ring Kecepatan -->
-            <path id="speed-bar" class="ring-fill speed-fill" d="M 45,155 A 75,75 0 1,1 155,155" />
+    <div id="speedo-wrapper">
+        <div id="speedometer-container">
+            <svg class="speedo-svg" viewBox="0 0 200 200">
+                <!-- Outer Arc Kiri (Engine Health/Status) -->
+                <path class="ring-bg" d="M 32,130 A 82,82 0 0,1 62,38" stroke="#333" stroke-width="6" fill="none" stroke-linecap="round"/>
+                <path id="engine-bar" class="ring-fill" d="M 32,130 A 82,82 0 0,1 62,38" stroke="#eab308" stroke-width="6" fill="none" stroke-linecap="round"/>
 
-            <!-- Outer Arc Kiri (Engine Health) -->
-            <path class="ring-bg engine-ring-bg" d="M 25,140 A 90,90 0 0,1 60,35" />
-            <path id="engine-bar" class="ring-fill engine-fill" d="M 25,140 A 90,90 0 0,1 60,35" />
+                <!-- Middle Ring Utama (Kecepatan / Speed) -->
+                <path class="ring-bg" d="M 45,150 A 70,70 0 1,1 155,150" stroke="#333" stroke-width="6" fill="none" stroke-linecap="round"/>
+                <path id="speed-bar" class="ring-fill" d="M 45,150 A 70,70 0 1,1 155,150" stroke="#ffffff" stroke-width="6" fill="none" stroke-linecap="round"/>
 
-            <!-- Outer Arc Kanan (Fuel Level) -->
-            <path class="ring-bg fuel-ring-bg" d="M 140,35 A 90,90 0 0,1 175,140" />
-            <path id="fuel-bar" class="ring-fill fuel-fill" d="M 140,35 A 90,90 0 0,1 175,140" />
-        </svg>
+                <!-- Outer Arc Kanan (Fuel Level) -->
+                <path class="ring-bg" d="M 138,38 A 82,82 0 0,1 168,130" stroke="#333" stroke-width="6" fill="none" stroke-linecap="round"/>
+                <path id="fuel-bar" class="ring-fill" d="M 138,38 A 82,82 0 0,1 168,130" stroke="#84cc16" stroke-width="6" fill="none" stroke-linecap="round"/>
+            </svg>
 
-        <!-- Teks Kecepatan di Tengah -->
-        <div class="speed-display">
-            <span id="speed-val">0</span>
-            <span class="speed-unit">KM/H</span>
-        </div>
+            <!-- Teks Kecepatan di Tengah -->
+            <div class="speed-display">
+                <span id="speed-val">0</span>
+                <span class="speed-unit">KM/H</span>
+            </div>
 
-        <!-- Indikator Ikon Bawah -->
-        <div class="indicators">
-            <div id="icon-headlight" class="icon-item"><i class="fa-solid fa-lightbulb"></i></div>
-            <div id="icon-engine" class="icon-item"><i class="fa-solid fa-car-battery"></i></div>
-            <div id="icon-lock" class="icon-item"><i class="fa-solid fa-door-closed"></i></div>
-            <div id="icon-fuel" class="icon-item"><i class="fa-solid fa-gas-pump"></i></div>
-        </div>
+            <!-- Indikator Ikon Bawah -->
+            <div class="indicators">
+                <div id="icon-headlight" class="icon-item"><i class="fa-solid fa-lightbulb"></i></div>
+                <div id="icon-engine" class="icon-item"><i class="fa-solid fa-car-battery"></i></div>
+                <div id="icon-lock" class="icon-item"><i class="fa-solid fa-door-closed"></i></div>
+                <div id="icon-fuel" class="icon-item"><i class="fa-solid fa-gas-pump"></i></div>
+            </div>
 
-        <!-- Sub Keybind Badges -->
-        <div class="keybinds">
-            <span class="badge">H</span>
-            <span class="badge">CTRL</span>
-            <span class="badge">L</span>
+            <!-- Sub Keybind Badges -->
+            <div class="keybinds">
+                <span class="badge">H</span>
+                <span class="badge">CTRL</span>
+                <span class="badge">L</span>
+            </div>
         </div>
     </div>
 
