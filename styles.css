@@ -2,109 +2,98 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Montserrat', 'Segoe UI', sans-serif;
+    user-select: none;
 }
 
-body {
-    background-color: rgba(0, 0, 0, 0.4);
-    display: flex;
-    justify-content: flex-end;
-    align-items: flex-end;
-    height: 100vh;
-    padding: 20px;
+html, body {
+    width: 100%;
+    height: 100%;
+    background: transparent !important; /* Membuat background full transparan di in-game CEF */
+    overflow: hidden;
+}
+
+#speedo-wrapper {
+    position: absolute;
+    bottom: 30px;
+    right: 30px;
+    width: 220px;
+    height: 240px;
 }
 
 #speedometer-container {
     position: relative;
-    width: 220px;
-    height: 250px;
+    width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
 .speedo-svg {
-    width: 100%;
+    width: 200px;
     height: 200px;
 }
 
-.ring-bg {
-    fill: none;
-    stroke: #333333;
-    stroke-linecap: round;
-}
-
 .ring-fill {
-    fill: none;
-    stroke-linecap: round;
-    transition: stroke-dashoffset 0.2s ease, stroke 0.3s ease;
+    transition: stroke-dashoffset 0.15s ease, stroke 0.3s ease;
 }
 
-.speed-ring-bg { stroke-width: 6; }
-.speed-fill {
-    stroke: #ffffff;
-    stroke-width: 6;
-    stroke-dasharray: 260;
-    stroke-dashoffset: 260;
+/* Base dasharray untuk kalkulasi ring */
+#speed-bar {
+    stroke-dasharray: 270;
+    stroke-dashoffset: 270;
 }
 
-.engine-ring-bg, .fuel-ring-bg { stroke-width: 8; }
-.engine-fill {
-    stroke: #eab308; /* Warna default / tinggi */
-    stroke-width: 8;
-    stroke-dasharray: 120;
-    stroke-dashoffset: 0;
-}
-.fuel-fill {
-    stroke: #84cc16; /* Warna default / tinggi */
-    stroke-width: 8;
-    stroke-dasharray: 120;
+#engine-bar, #fuel-bar {
+    stroke-dasharray: 100;
     stroke-dashoffset: 0;
 }
 
-/* Central Text */
+/* Central Text Display */
 .speed-display {
     position: absolute;
-    top: 65px;
+    top: 60px;
     text-align: center;
     color: #ffffff;
 }
 
 #speed-val {
-    font-size: 42px;
+    font-size: 46px;
     font-weight: 800;
     line-height: 1;
+    letter-spacing: -1px;
 }
 
 .speed-unit {
     display: block;
     font-size: 11px;
     font-weight: 700;
-    color: #cccccc;
-    margin-top: 4px;
+    color: #e0e0e0;
+    margin-top: 2px;
 }
 
 /* Indicators */
 .indicators {
     display: flex;
-    gap: 16px;
-    margin-top: -10px;
+    gap: 18px;
+    margin-top: -15px;
     align-items: center;
 }
 
 .icon-item {
-    font-size: 16px;
-    color: #555555;
+    font-size: 15px;
+    color: #444444; /* Warna saat mati/off */
     transition: color 0.3s ease;
 }
 
-/* Classes Dynamic Colors */
+/* Perubahan Warna Ikon saat Aktif / Status Tertentu */
 .icon-item.active-blue { color: #3b82f6; }
 .icon-item.active-green { color: #84cc16; }
 .icon-item.active-yellow { color: #eab308; }
 .icon-item.active-red { color: #ef4444; }
 
-/* Keybinds */
+/* Badges / Keybinds */
 .keybinds {
     display: flex;
     gap: 12px;
@@ -112,10 +101,11 @@ body {
 }
 
 .badge {
-    border: 1px solid #666666;
-    border-radius: 12px;
-    padding: 1px 8px;
+    border: 1px solid #555555;
+    border-radius: 10px;
+    padding: 1px 7px;
     font-size: 9px;
-    color: #aaaaaa;
+    color: #888888;
     font-weight: 600;
+    background: rgba(0, 0, 0, 0.3);
 }
